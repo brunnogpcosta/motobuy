@@ -33,7 +33,7 @@ const Carousel: React.FC = () => {
     {
       image: CustomImage,
       title: 'Custom',
-      description: 'Motos para quem procura estilo e estrada'
+      description: 'Motos para quem procura um estilo rústico e muita estrada'
     },
     {
       image: SportImage,
