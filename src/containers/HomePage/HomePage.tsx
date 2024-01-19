@@ -22,8 +22,15 @@ const HomePage = (): JSX.Element => {
               <Autocomplete
                 disablePortal
                 id="model-filter"
-                options={['Preço', 'model2']}
-                sx={{ marginBottom: 2, width: 200 }}
+                options={['Preço', 'Modelo']}
+                sx={{
+                  width: '100%',
+                  maxWidth: 250,
+                  '@media (max-width: 600px)': {
+                    width: '100%',
+                    maxWidth: '100%'
+                  }
+                }}
                 renderInput={(params) => (
                   <TextField {...params} label="Ordenar" />
                 )}
