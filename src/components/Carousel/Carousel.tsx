@@ -4,7 +4,7 @@ import { Typography, Button, Grid, Box, Container, useTheme, useMediaQuery } fro
 import CustomImage from '../../assets/motos/custom/meteor.png'
 import SportImage from '../../assets/motos/esportivas/860x550-imagem-home-moto-honda-crf-1100l-africa-twin-adventure-sports-dct-2023-branco-perolizado-v2.png'
 import ScooterImage from '../../assets/motos/scooter/moto_honda_adv_verde_fosco.png'
-import UrbanImage from '../../assets/motos/urbana/CG Cargo - branco.png'
+import UrbanImage from '../../assets/motos/urbana/lateral-direita-moto-honda-cb-300f-twister-modelo-abs-cor-dourada.png'
 
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
@@ -60,7 +60,7 @@ const Carousel: React.FC = () => {
             <Container maxWidth="xl">
               <Grid container spacing={3} sx={{ py: isMobile ? 4 : 8 }}>
                 <Grid item xs={12} md={6}>
-                  <img src={item.image} alt={`Imagem ${index}`} style={{ width: isMobile ? '100%' : 400, borderRadius: '8px' }} />
+                  <img src={item.image} alt={`Imagem ${index}`} style={{ maxWidth: isMobile ? '100%' : 400, borderRadius: '8px' }} />
                 </Grid>
                 <Grid item xs={12} md={6} sx={{ textAlign: isMobile ? 'center' : 'left' }}>
                   <Typography variant="h3" sx={{ fontWeight: 'regular', mb: 2 }}>

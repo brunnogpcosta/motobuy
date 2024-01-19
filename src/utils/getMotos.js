@@ -44,6 +44,50 @@ const motos = [
     cc: '300',
     price: 220000,
     createdAt: '19-01-2024'
+  },
+  {
+    id: '5',
+    image: MotoImage,
+    name: 'CB 300F Twister',
+    description: 'Description da CB 300F Twister',
+    brand: 'honda',
+    modelo: 'CB 300F',
+    cc: '300',
+    price: 220000,
+    createdAt: '19-01-2024'
+  },
+  {
+    id: '6',
+    image: MotoImage,
+    name: 'CB 300F Twister',
+    description: 'Description da CB 300F Twister',
+    brand: 'honda',
+    modelo: 'CB 300F',
+    cc: '300',
+    price: 220000,
+    createdAt: '19-01-2024'
+  },
+  {
+    id: '7',
+    image: MotoImage,
+    name: 'CB 300F Twister',
+    description: 'Description da CB 300F Twister',
+    brand: 'honda',
+    modelo: 'CB 300F',
+    cc: '300',
+    price: 220000,
+    createdAt: '19-01-2024'
+  },
+  {
+    id: '8',
+    image: MotoImage,
+    name: 'CB 300F Twister',
+    description: 'Description da CB 300F Twister',
+    brand: 'honda',
+    modelo: 'CB 300F',
+    cc: '300',
+    price: 220000,
+    createdAt: '19-01-2024'
   }
 ]
 
