@@ -12,23 +12,20 @@ import Tooltip from '@mui/material/Tooltip'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { Button, IconButton, Modal } from '@mui/material'
 
-// const settings = ['Profile', 'Account', 'Dashboard', 'Logout']
-
 const Header = (): JSX.Element => {
   const [openModal, setOpenModal] = React.useState(false)
 
   return (
-    <AppBar position="static" sx={{ bgcolor: '#D9D9D9' }} elevation={0}>
+    <AppBar position="static" sx={{ bgcolor: '#D9D9D9', py: 2 }} elevation={0}>
       <Container maxWidth="xl">
         <Toolbar sx={{ justifyContent: 'space-between' }}>
           <Typography
             variant="h6"
-            noWrap
             component="a"
             href="#app-bar-with-responsive-menu"
             sx={{
               mr: 2,
-              display: { xs: 'none', md: 'flex' },
+              display: { md: 'flex' },
               fontFamily: 'roboto',
               fontWeight: 700,
               color: 'black',
