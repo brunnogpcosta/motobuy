@@ -1,6 +1,6 @@
 import React from 'react'
 import Slider from 'react-slick'
-import { Typography, Button, Grid, Box, Container, useTheme, useMediaQuery } from '@mui/material'
+import { Typography, Grid, Box, Container, useTheme, useMediaQuery } from '@mui/material'
 import CustomImage from '../../assets/motos/custom/meteor.png'
 import SportImage from '../../assets/motos/esportivas/860x550-imagem-home-moto-honda-crf-1100l-africa-twin-adventure-sports-dct-2023-branco-perolizado-v2.png'
 import ScooterImage from '../../assets/motos/scooter/moto_honda_adv_verde_fosco.png'
@@ -77,19 +77,14 @@ const Carousel: React.FC = () => {
                     style={{ width: '100%', maxHeight: 400, height: '100%' }}
                   />
                 </Grid>
-                <Grid item xs={12} md={6} sx={{ textAlign: isMobile ? 'center' : 'left' }}>
+                <Grid item xs={12} md={6} sx={{ textAlign: isMobile ? 'center' : 'left', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <Typography variant="h3" sx={{ fontWeight: 'regular', mb: 2 }}>
                     {item.title}
                   </Typography>
                   <Typography variant="body1" sx={{ fontSize: isMobile ? 18 : 30, fontWeight: 'light', mb: 3 }}>
                     {item.description}
                   </Typography>
-                  <Button
-                    variant="contained"
-                    sx={{ backgroundColor: '#1A1A1A', ':hover': { backgroundColor: '#000' }, width: '100%', height: 50 }}
-                  >
-                    Ver modelos
-                  </Button>
+
                 </Grid>
               </Grid>
             </Container>

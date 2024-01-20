@@ -1,27 +1,35 @@
 import React, { useEffect, useState } from 'react'
 import { Close } from '@mui/icons-material'
 import { Box, IconButton, Typography } from '@mui/material'
+import { useNavigate } from 'react-router-dom'
 
 const TagsFilter = (): JSX.Element => {
+  const navigate = useNavigate()
   const [urlParams, setUrlParams] = useState<URLSearchParams>(new URLSearchParams())
 
   useEffect(() => {
     const currentUrlParams = new URLSearchParams(window.location.search)
     setUrlParams(currentUrlParams)
-  }, [])
+  }, [window.location.search])
 
   const removeParam = (paramKey: string): void => {
+    if (paramKey.toLowerCase() === 'page') {
+      return
+    }
+
     const updatedParams = new URLSearchParams(urlParams.toString())
     updatedParams.delete(paramKey)
 
-    window.history.replaceState({}, '', `${window.location.pathname}?${updatedParams.toString()}`)
+    navigate(`${window.location.pathname}${updatedParams.toString() !== '' ? `?${updatedParams.toString()}` : ''}`)
 
     setUrlParams(updatedParams)
   }
 
+  const filteredParams = Array.from(urlParams.entries()).filter(([paramKey]) => paramKey.toLowerCase() !== 'page')
+
   return (
     <Box sx={{ width: '100%', display: 'inline-flex', alignItems: 'flex-start' }}>
-      {Array.from(urlParams.entries()).map(([paramKey, paramValue], index) => (
+      {filteredParams.map(([paramKey, paramValue], index) => (
         <Box
           key={index}
           sx={{
