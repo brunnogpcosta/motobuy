@@ -1,12 +1,29 @@
 import React from 'react'
-import motos from '../../utils/getMotos'
 import { Box, Button, Grid, Typography } from '@mui/material'
 
-const ListMotos = (): JSX.Element => {
+interface IMoto {
+  brand: string
+  cc: number
+  createdAt: string
+  description: string
+  id: string
+  model: string
+  name: string
+  photo: string
+  price: number
+
+}
+
+interface IListMotos {
+  data: IMoto[]
+
+}
+
+const ListMotos: React.FC<IListMotos> = ({ data }): JSX.Element => {
   return (
-    <Box sx={{ flexGrow: 1, pb: 8 }}>
+    <Box sx={{ flexGrow: 1, pb: 2 }}>
       <Grid container spacing={2}>
-        {motos.map((moto, index) => (
+        {data.map((moto, index) => (
           <Grid item key={index} xs={12} sm={6} md={3} lg={3} xl={3}>
             <Box
               sx={{
@@ -15,7 +32,7 @@ const ListMotos = (): JSX.Element => {
                 borderRadius: 2
               }}
             >
-              <img src={moto.image} width="100%" alt={moto.name} />
+              <img src={moto.photo} width="100%" alt={moto.name} />
             </Box>
             <Box sx={{ textAlign: 'left', p: 1 }}>
               <Typography>{moto.name}</Typography>

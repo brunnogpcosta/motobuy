@@ -22,11 +22,22 @@ const Carousel: React.FC = () => {
   const settings = {
     dots: true,
     infinite: true,
-    speed: 4000,
+    speed: 1000,
     autoplay: true,
     autoplaySpeed: 3000,
     arrows: false,
-    adaptiveHeight: true
+    adaptiveHeight: true,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    responsive: [
+      {
+        breakpoint: 600,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1
+        }
+      }
+    ]
   }
 
   const carouselItems: CarouselItem[] = [
@@ -60,7 +71,11 @@ const Carousel: React.FC = () => {
             <Container maxWidth="xl">
               <Grid container spacing={3} sx={{ py: isMobile ? 4 : 8 }}>
                 <Grid item xs={12} md={6}>
-                  <img src={item.image} alt={`Imagem ${index}`} style={{ maxWidth: isMobile ? '100%' : 400, borderRadius: '8px' }} />
+                  <img
+                    src={item.image}
+                    alt={`Imagem ${index}`}
+                    style={{ width: '100%', maxHeight: 400, height: '100%' }}
+                  />
                 </Grid>
                 <Grid item xs={12} md={6} sx={{ textAlign: isMobile ? 'center' : 'left' }}>
                   <Typography variant="h3" sx={{ fontWeight: 'regular', mb: 2 }}>

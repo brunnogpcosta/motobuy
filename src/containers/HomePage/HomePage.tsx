@@ -1,10 +1,32 @@
 import React from 'react'
 import Carousel from '../../components/Carousel/Carousel'
 import ListMotos from '../../components/ListMotos/ListMotos'
-import { Box, Container, Grid, Typography, Autocomplete, TextField } from '@mui/material'
-import Filters from '../../components/Filters/Filters'
+import {
+  Box,
+  Container,
+  Grid,
+  Typography,
+  Autocomplete,
+  TextField,
+  Pagination
+} from '@mui/material'
+import { useQuery } from '@tanstack/react-query'
 
-const HomePage = (): JSX.Element => {
+import Filters from '../../components/Filters/Filters'
+import TagsFilter from '../../components/TagsFilter/TagsFilter'
+
+const HomePage = (): JSX.Element | string => {
+  const { isPending, error, data } = useQuery({
+    queryKey: ['repoData'],
+    queryFn: async () =>
+      await fetch('https://65aad076081bd82e1d97d33d.mockapi.io/moto').then(async (res) =>
+        await res.json()
+      )
+  })
+
+  if (isPending) return 'Loading...'
+  if (error != null) return 'An error has occurred: ' + error.message
+
   return (
     <>
       <Carousel />
@@ -17,8 +39,18 @@ const HomePage = (): JSX.Element => {
             </Box>
             <Filters />
           </Grid>
-          <Grid item xs={12} sm={12} md={9}>
-            <Box sx={{ marginBottom: 2, width: '100%', display: 'flex', justifyContent: 'right' }}>
+          <Grid item xs={12} sm={12} md={9} sx={{ mb: 8 }}>
+            <Box
+              sx={{
+                marginBottom: 2,
+                width: '100%',
+                display: 'flex',
+                justifyContent: 'right'
+              }}
+            >
+
+              <TagsFilter/>
+
               <Autocomplete
                 disablePortal
                 id="model-filter"
@@ -36,7 +68,8 @@ const HomePage = (): JSX.Element => {
                 )}
               />
             </Box>
-            <ListMotos />
+            <ListMotos data={data}/>
+            <Pagination count={10} />
           </Grid>
         </Grid>
       </Container>
