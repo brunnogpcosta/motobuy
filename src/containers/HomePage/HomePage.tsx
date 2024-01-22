@@ -15,6 +15,7 @@ import { useQuery } from '@tanstack/react-query'
 import Filters from '../../components/Filters/Filters'
 import TagsFilter from '../../components/TagsFilter/TagsFilter'
 import { useNavigate, useSearchParams } from 'react-router-dom'
+import Loading from '../../components/Loading/Loading'
 
 interface IMoto {
   brand: string
@@ -71,7 +72,6 @@ const HomePage = (): JSX.Element | string => {
   }
 
   // im do this beacouse the mockApi dont have count items in free plan
-
   const { isPending, error } = useQuery<any>({
     queryKey: ['repoData'],
     queryFn: async () => {
@@ -130,7 +130,7 @@ const HomePage = (): JSX.Element | string => {
     }
   })
 
-  if (isPending) return 'Loading...'
+  if (isPending) return <Loading/>
   if (error != null) return 'An error has occurred: ' + error.message
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number): void => {

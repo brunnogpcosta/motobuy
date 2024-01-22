@@ -1,5 +1,6 @@
 import React from 'react'
 import { Box, Button, Grid, Typography } from '@mui/material'
+import { toCurrencyFormat } from '../../utils/functions'
 
 interface IMoto {
   brand: string
@@ -45,7 +46,7 @@ const ListMotos: React.FC<IListMotos> = ({ data }): JSX.Element => {
                 {moto.description}
               </Typography>
               <Typography sx={{ fontWeight: 'bold', fontSize: 20 }}>
-                R$ {moto.price}
+                R$ {toCurrencyFormat(moto.price)}
               </Typography>
               <Button
                 variant="contained"
