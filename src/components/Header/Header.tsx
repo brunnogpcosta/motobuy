@@ -9,9 +9,11 @@ import Tooltip from '@mui/material/Tooltip'
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart'
 import { Button } from '@mui/material'
 import ModalCarShopping from '../ModalCarShopping/ModalCarShopping'
+import { useShoppingCart } from '../../contexts/shoppingCart'
 
 const Header = (): JSX.Element => {
   const [openModal, setOpenModal] = React.useState(false)
+  const { countItems } = useShoppingCart()
 
   return (
     <AppBar position="static" sx={{ bgcolor: '#D9D9D9', py: 2 }} elevation={0}>
@@ -55,7 +57,7 @@ const Header = (): JSX.Element => {
                 }}
               >
                 <ShoppingCartIcon sx={{ mr: 1 }} />
-                <Typography>2</Typography>
+                <Typography>{ countItems() ?? 0}</Typography>
               </Button>
             </Tooltip>
             <ModalCarShopping

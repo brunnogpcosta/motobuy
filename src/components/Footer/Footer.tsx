@@ -7,7 +7,7 @@ const Footer = (): JSX.Element => {
   return (
     <Box sx={{ backgroundColor: '#000', padding: 2, mt: 6 }}>
       <Typography variant="body2" sx={{ color: '#fff' }}>
-        {`© ${year} - Emprego Urgente`}
+        {`© ${year} - Motobuy`}
       </Typography>
     </Box>
   )

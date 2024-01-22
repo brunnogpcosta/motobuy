@@ -1,5 +1,5 @@
 import React from 'react'
-import motos from '../../utils/getMotos'
+
 import {
   Box,
   IconButton,
@@ -11,8 +11,28 @@ import {
 import LessIcon from '@mui/icons-material/Remove'
 import PlusIcon from '@mui/icons-material/Add'
 import CloseIcon from '@mui/icons-material/Delete'
+import { toCurrencyFormat } from '../../utils/functions'
+import { useShoppingCart } from '../../contexts/shoppingCart'
 
-const ListCarShoppingMotos = (): JSX.Element => {
+interface IMoto {
+  brand: string
+  cc: number
+  createdAt: string
+  description: string
+  id: string
+  model: string
+  name: string
+  photo: string
+  price: number
+  quantity?: number
+}
+
+interface IListCarShoppingMotos {
+  motos: IMoto[]
+}
+
+const ListCarShoppingMotos: React.FC<IListCarShoppingMotos> = ({ motos }): JSX.Element => {
+  const { removeItemsById, addItem, removeAItem } = useShoppingCart()
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -39,7 +59,7 @@ const ListCarShoppingMotos = (): JSX.Element => {
               width: isSmallScreen ? '100%' : 'auto'
             }}
           >
-            <img src={moto.image} width={100} alt={moto.name} />
+            <img src={moto.photo} width={100} alt={moto.name} />
           </Box>
 
           <Box sx={{ textAlign: 'left', padding: 4, flex: 1 }}>
@@ -56,11 +76,11 @@ const ListCarShoppingMotos = (): JSX.Element => {
           >
             <Typography sx={{ fontWeight: 'light' }}>Qtd.</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton>
+              <IconButton onClick={() => { removeAItem(moto.id) }}>
                 <LessIcon />
               </IconButton>
-              <Typography sx={{ p: 1 }}>1</Typography>
-              <IconButton>
+              <Typography sx={{ p: 1 }}>{moto.quantity}</Typography>
+              <IconButton onClick={() => { addItem(moto) }} >
                 <PlusIcon />
               </IconButton>
             </Box>
@@ -68,12 +88,12 @@ const ListCarShoppingMotos = (): JSX.Element => {
 
           <Box sx={{ textAlign: 'left', padding: 4 }}>
             <Typography sx={{ fontWeight: 'light' }}>Preço</Typography>
-            <Typography sx={{ fontWeight: 'bold' }}>R$ {moto.price}</Typography>
+            <Typography sx={{ fontWeight: 'bold' }}>R$ {toCurrencyFormat(moto.price * (moto?.quantity ?? 1))}</Typography>
           </Box>
 
-          <IconButton>
-                <CloseIcon color="error"/>
-              </IconButton>
+          <IconButton onClick={() => { removeItemsById(moto.id) }}>
+            <CloseIcon color="error" />
+          </IconButton>
         </Paper>
 
       ))}

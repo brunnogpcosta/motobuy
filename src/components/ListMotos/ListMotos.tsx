@@ -1,6 +1,8 @@
 import React from 'react'
 import { Box, Button, Grid, Typography } from '@mui/material'
 import { toCurrencyFormat } from '../../utils/functions'
+import { useShoppingCart } from '../../contexts/shoppingCart'
+import { toast } from 'react-toastify'
 
 interface IMoto {
   brand: string
@@ -12,7 +14,7 @@ interface IMoto {
   name: string
   photo: string
   price: number
-
+  quantity?: number
 }
 
 interface IListMotos {
@@ -21,6 +23,21 @@ interface IListMotos {
 }
 
 const ListMotos: React.FC<IListMotos> = ({ data }): JSX.Element => {
+  const { addItem } = useShoppingCart()
+
+  const addToCart = (moto: IMoto): void => {
+    addItem(moto)
+
+    toast.success('Moto adicionada ao carrinho de compras', {
+      position: 'bottom-right',
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true
+    })
+  }
+
   return (
     <Box sx={{ flexGrow: 1, pb: 2 }}>
       <Grid container spacing={2}>
@@ -49,6 +66,7 @@ const ListMotos: React.FC<IListMotos> = ({ data }): JSX.Element => {
                 R$ {toCurrencyFormat(moto.price)}
               </Typography>
               <Button
+                onClick={() => { addToCart(moto) }}
                 variant="contained"
                 sx={{
                   backgroundColor: '#1A1A1A',

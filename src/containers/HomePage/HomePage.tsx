@@ -16,6 +16,9 @@ import Filters from '../../components/Filters/Filters'
 import TagsFilter from '../../components/TagsFilter/TagsFilter'
 import { useNavigate, useSearchParams } from 'react-router-dom'
 import Loading from '../../components/Loading/Loading'
+import { ToastContainer } from 'react-toastify'
+
+import 'react-toastify/dist/ReactToastify.css'
 
 interface IMoto {
   brand: string
@@ -27,7 +30,7 @@ interface IMoto {
   name: string
   photo: string
   price: number
-
+  quantity?: number
 }
 
 const HomePage = (): JSX.Element | string => {
@@ -90,6 +93,7 @@ const HomePage = (): JSX.Element | string => {
     queryKey: ['repoData', {
       limit: 8,
       page: (searchParams.get('page') ?? '1'),
+      search: searchParams.get('search') !== null ? searchParams.get('search') : undefined,
       brand: searchParams.get('brand') !== null ? searchParams.get('brand') : undefined,
       model: searchParams.get('model') !== null ? searchParams.get('model') : undefined,
       cc: searchParams.get('cc') !== null ? Number(searchParams.get('cc')).toString() : undefined,
@@ -97,6 +101,10 @@ const HomePage = (): JSX.Element | string => {
       sortBy: searchParams.get('sortBy') !== null ? searchParams.get('sortBy') : undefined
     }],
     queryFn: async () => {
+      if (searchParams.get('search') !== null) {
+        queryParams.set('search', searchParams.get('search') ?? '')
+      }
+
       if (searchParams.get('model') !== null) {
         queryParams.set('model', searchParams.get('model') ?? '')
       }
@@ -130,7 +138,7 @@ const HomePage = (): JSX.Element | string => {
     }
   })
 
-  if (isPending) return <Loading/>
+  if (isPending) return <Loading />
   if (error != null) return 'An error has occurred: ' + error.message
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number): void => {
@@ -156,6 +164,7 @@ const HomePage = (): JSX.Element | string => {
 
   return (
     <>
+      <ToastContainer />
       <Carousel />
 
       <Container maxWidth="xl" sx={{ marginTop: 4 }}>
@@ -209,6 +218,7 @@ const HomePage = (): JSX.Element | string => {
             </Grid>
           }
         </Grid>
+
       </Container>
     </>
   )
