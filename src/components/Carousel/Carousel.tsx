@@ -71,11 +71,14 @@ const Carousel: React.FC = () => {
             <Container maxWidth="xl">
               <Grid container spacing={3} sx={{ py: isMobile ? 4 : 8 }}>
                 <Grid item xs={12} md={6}>
+                  <Box sx={{ height: 400 }}>
                   <img
                     src={item.image}
                     alt={`Imagem ${index}`}
-                    style={{ width: '100%', maxHeight: 400, height: '100%' }}
+                    style={{ width: '100%', objectFit: 'cover' }}
                   />
+                  </Box>
+
                 </Grid>
                 <Grid item xs={12} md={6} sx={{ textAlign: isMobile ? 'center' : 'left', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
                   <Typography variant="h3" sx={{ fontWeight: 'regular', mb: 2 }}>
