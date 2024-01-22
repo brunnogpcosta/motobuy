@@ -30,71 +30,76 @@ interface IMoto {
 }
 
 const HomePage = (): JSX.Element | string => {
+  const queryParams = new URLSearchParams()
   const navigate = useNavigate()
   const limit = 8
   const [pages, setPages] = useState(1)
   const [searchParams] = useSearchParams()
   const [fields, setFields] = useState<any>(null)
 
+  const handleFields = (responseData: any): void => {
+    const uniqueBrands = new Set<string>()
+    const uniqueModels = new Set<string>()
+    const uniqueCCs = new Set<string>()
+    const uniqueDates = new Set<string>()
+
+    responseData.forEach((item: {
+      brand: string
+      model: string
+      cc: string
+      createdAt: string
+    }) => {
+      uniqueBrands.add(item.brand)
+      uniqueModels.add(item.model)
+      uniqueCCs.add(String(item.cc))
+      uniqueDates.add(item.createdAt)
+    })
+
+    const brandsArray = Array.from(uniqueBrands)
+    const modelsArray = Array.from(uniqueModels)
+    const ccsArray = Array.from(uniqueCCs)
+    const datesArray = Array.from(uniqueDates)
+
+    const fields = {
+      brandsArray,
+      modelsArray,
+      ccsArray,
+      datesArray
+    }
+
+    setFields(fields)
+  }
+
   // im do this beacouse the mockApi dont have count items in free plan
+
   const { isPending, error } = useQuery<any>({
     queryKey: ['repoData'],
     queryFn: async () => {
       const res = await fetch('https://65aad076081bd82e1d97d33d.mockapi.io/moto')
-      const responseData = await res.json()
+      const responseData: IMoto[] = await res.json()
 
-      // Arrays para armazenar valores únicos de cada propriedade
-      const uniqueBrands = new Set<string>()
-      const uniqueModels = new Set<string>()
-      const uniqueCCs = new Set<string>()
-      const uniqueDates = new Set<string>()
-
-      // Varre cada objeto e adiciona as propriedades aos arrays únicos
-      responseData.forEach((item: {
-        brand: string
-        model: string
-        cc: string
-        createdAt: string
-      }) => {
-        uniqueBrands.add(item.brand)
-        uniqueModels.add(item.model)
-        uniqueCCs.add(String(item.cc))
-        uniqueDates.add(item.createdAt)
-      })
-
-      // Converte os sets para arrays
-      const brandsArray = Array.from(uniqueBrands)
-      const modelsArray = Array.from(uniqueModels)
-      const ccsArray = Array.from(uniqueCCs)
-      const datesArray = Array.from(uniqueDates)
-
-      const fields = {
-        brandsArray,
-        modelsArray,
-        ccsArray,
-        datesArray
-      }
-
-      setFields(fields)
-
+      handleFields(responseData)
       // set Numbers Page
       setPages(Math.ceil(responseData.length / limit))
 
-      // Retorna os dados originais e os arrays únicos
       return responseData
     }
   })
 
-  const { data = [] } = useQuery<IMoto[]>({
+  const { data = [] } = useQuery<IMoto[] | null>({
     queryKey: ['repoData', {
       limit: 8,
       page: (searchParams.get('page') ?? '1'),
       brand: searchParams.get('brand') !== null ? searchParams.get('brand') : undefined,
+      model: searchParams.get('model') !== null ? searchParams.get('model') : undefined,
       cc: searchParams.get('cc') !== null ? Number(searchParams.get('cc')).toString() : undefined,
-      createdAt: searchParams.get('publishedDate') !== null ? searchParams.get('publishedDate') : undefined
+      createdAt: searchParams.get('publishedDate') !== null ? searchParams.get('publishedDate') : undefined,
+      sortBy: searchParams.get('sortBy') !== null ? searchParams.get('sortBy') : undefined
     }],
     queryFn: async () => {
-      const queryParams = new URLSearchParams()
+      if (searchParams.get('model') !== null) {
+        queryParams.set('model', searchParams.get('model') ?? '')
+      }
 
       if (searchParams.get('brand') !== null) {
         queryParams.set('brand', searchParams.get('brand') ?? '')
@@ -106,6 +111,14 @@ const HomePage = (): JSX.Element | string => {
 
       if (searchParams.get('publishedDate') !== null) {
         queryParams.set('createdAt', searchParams.get('publishedDate') ?? '')
+      }
+
+      if (searchParams.get('sortBy') !== null) {
+        queryParams.set('sortBy', searchParams.get('sortBy') ?? '')
+      }
+
+      if (searchParams.get('order') !== null) {
+        queryParams.set('order', searchParams.get('order') ?? '')
       }
 
       const res = await fetch(`https://65aad076081bd82e1d97d33d.mockapi.io/moto?limit=${limit}&page=${searchParams.get('page') ?? '1'}&${queryParams.toString()}`)
@@ -127,6 +140,20 @@ const HomePage = (): JSX.Element | string => {
     navigate({ search: searchParams.toString() })
   }
 
+  const handleSort = (event: React.ChangeEvent<unknown>, value: any): void => {
+    const newSearchParams = new URLSearchParams(searchParams.toString())
+
+    newSearchParams.set('sortBy', 'price')
+
+    if (value === '2') {
+      newSearchParams.set('order', 'asc')
+    } else {
+      newSearchParams.set('order', 'desc')
+    }
+
+    navigate({ search: newSearchParams.toString() })
+  }
+
   return (
     <>
       <Carousel />
@@ -139,7 +166,7 @@ const HomePage = (): JSX.Element | string => {
             </Box>
             <Filters fields={fields} />
           </Grid>
-          {data.length > 0
+          {Array.isArray(data) && data.length > 0
             ? <Grid item xs={12} sm={12} md={9} sx={{ mb: 8 }}>
               <Box
                 sx={{
@@ -155,7 +182,9 @@ const HomePage = (): JSX.Element | string => {
                 <Autocomplete
                   disablePortal
                   id="model-filter"
-                  options={['Preço', 'Modelo']}
+                  options={[{ key: '1', label: 'Preço: Maior para o menor' }, { key: '2', label: 'Preço: Menor para o Maior' }]}
+                  onChange={(_, value) => { handleSort(_, value?.key) }}
+                  value={{ key: searchParams.get('order') === 'desc' ? '2' : '1', label: searchParams.get('order') === 'desc' ? 'Preço: Maior para o menor' : 'Preço: Menor para o maior' }}
                   sx={{
                     width: '100%',
                     maxWidth: 250,
@@ -168,8 +197,9 @@ const HomePage = (): JSX.Element | string => {
                     <TextField {...params} label="Ordenar" />
                   )}
                 />
+
               </Box>
-              <ListMotos data={data} />
+              <ListMotos data={Array.isArray(data) ? data : []} />
               <Pagination count={pages} onChange={handleChange} />
             </Grid>
             : <Grid item xs={12} sm={12} md={9} sx={{ mb: 8 }}>
@@ -177,7 +207,7 @@ const HomePage = (): JSX.Element | string => {
                 <Typography>Nenhum item para mostrar</Typography>
               </Box>
             </Grid>
-            }
+          }
         </Grid>
       </Container>
     </>

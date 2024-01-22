@@ -16,18 +16,18 @@ interface IFilters {
 const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
   const navigate = useNavigate()
   const location = useLocation()
-
+  const searchParams = new URLSearchParams(location.search)
   const [searchValue, setSearchValue] = useState<string>('')
   const [brandValue, setBrandValue] = useState<string | null>(null)
+  const [modelValue, setModelValue] = useState<string | null>(null)
   const [CCValue, setCCValue] = useState<string | null>(null)
   const [publishedDate, setPublishedDate] = useState<string | null>(null)
 
   useEffect(() => {
-    const searchParams = new URLSearchParams(location.search)
-
     setSearchValue(searchParams.get('search') ?? '')
     setBrandValue(searchParams.get('brand') ?? null)
-    setCCValue(searchParams.get('model') ?? null)
+    setModelValue(searchParams.get('model') ?? null)
+    setCCValue(searchParams.get('cc') ?? null)
     setPublishedDate(searchParams.get('publishedDate') ?? null)
   }, [location.search])
 
@@ -42,11 +42,10 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
   }
 
   const handleNavigation = (): void => {
-    const searchParams = new URLSearchParams()
-
     if (searchValue.trim() !== '') searchParams.set('search', searchValue.trim())
+    if (modelValue !== null && modelValue.trim() !== '') searchParams.set('model', modelValue.trim())
     if (brandValue !== null && brandValue.trim() !== '') searchParams.set('brand', brandValue.trim())
-    if (CCValue !== null && CCValue.trim() !== '') searchParams.set('model', CCValue.trim())
+    if (CCValue !== null && CCValue.trim() !== '') searchParams.set('cc', CCValue.trim())
     if (publishedDate !== null && publishedDate.trim() !== '') searchParams.set('publishedDate', publishedDate.trim())
 
     navigate({ search: searchParams.toString() })
@@ -59,6 +58,7 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
   const handleClearFilters = (): void => {
     setSearchValue('')
     setBrandValue(null)
+    setModelValue(null)
     setCCValue(null)
     setPublishedDate(null)
     navigate({ search: '' })
@@ -78,6 +78,16 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
 
       <Autocomplete
         disablePortal
+        id="model-filter"
+        options={fields.modelsArray}
+        sx={{ marginBottom: 2 }}
+        renderInput={(params) => <TextField {...params} label="Modelo" />}
+        value={modelValue}
+        onChange={(_, value) => { setModelValue(value) }}
+      />
+
+      <Autocomplete
+        disablePortal
         id="brand-filter"
         options={fields.brandsArray}
         sx={{ marginBottom: 2 }}
@@ -88,7 +98,7 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
 
       <Autocomplete
         disablePortal
-        id="model-filter"
+        id="cc-filter"
         options={fields.ccsArray}
         sx={{ marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="Cilindradas" />}

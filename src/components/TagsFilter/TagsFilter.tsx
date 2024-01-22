@@ -25,7 +25,9 @@ const TagsFilter = (): JSX.Element => {
     setUrlParams(updatedParams)
   }
 
-  const filteredParams = Array.from(urlParams.entries()).filter(([paramKey]) => paramKey.toLowerCase() !== 'page')
+  const filteredParams = Array.from(urlParams.entries()).filter(([paramKey]) => {
+    return paramKey.toLowerCase() !== 'page' && paramKey.toLowerCase() !== 'sortby' && paramKey.toLowerCase() !== 'order'
+  })
 
   return (
     <Box sx={{ width: '100%', display: 'inline-flex', alignItems: 'flex-start' }}>

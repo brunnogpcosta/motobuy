@@ -23,7 +23,7 @@ const ListMotos: React.FC<IListMotos> = ({ data }): JSX.Element => {
   return (
     <Box sx={{ flexGrow: 1, pb: 2 }}>
       <Grid container spacing={2}>
-        {data.map((moto, index) => (
+        {data?.map((moto, index) => (
           <Grid item key={index} xs={12} sm={6} md={3} lg={3} xl={3}>
             <Box
               sx={{
@@ -32,10 +32,15 @@ const ListMotos: React.FC<IListMotos> = ({ data }): JSX.Element => {
                 borderRadius: 2
               }}
             >
-              <img src={moto.photo} width="100%" alt={moto.name} />
+              <img src={moto.photo} width="100%" alt={moto.name} height={160} style={{ objectFit: 'cover' }} />
             </Box>
             <Box sx={{ textAlign: 'left', p: 1 }}>
-              <Typography>{moto.name}</Typography>
+              <Typography sx={{ whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                <abbr title={moto.name} style={{ textDecoration: 'none' }}>
+                  {moto.name}
+                </abbr>
+              </Typography>
+
               <Typography sx={{ fontWeight: 'light' }}>
                 {moto.description}
               </Typography>
