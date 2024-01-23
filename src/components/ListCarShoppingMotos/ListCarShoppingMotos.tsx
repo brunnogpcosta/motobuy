@@ -57,7 +57,8 @@ const ListCarShoppingMotos: React.FC<IListCarShoppingMotos> = ({ motos, resume }
               padding: 2,
               borderRadius: 2,
               marginBottom: isSmallScreen ? 2 : 0,
-              width: isSmallScreen ? '100%' : 'auto'
+              width: isSmallScreen ? '100%' : 'auto',
+              textAlign: 'center'
             }}
           >
             <img src={moto.photo} width={100} alt={moto.name} />

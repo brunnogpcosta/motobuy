@@ -38,7 +38,7 @@ const Checkout = (): JSX.Element => {
         </Box>
         <ListCarShoppingMotos motos={cartItems} />
 
-        <Box sx={{ display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row', justifyContent: 'space-between', alignItems: 'center', py: 6 }}>
+        <Box sx={{ display: 'flex', flexDirection: isSmallScreen ? 'column' : 'row', justifyContent: 'space-between', alignItems: 'center', py: 6, mb: 6 }}>
           <Box sx={{ marginBottom: isSmallScreen ? 2 : 0 }}>
             <Typography variant="h5">Quantidade de Items</Typography>
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
