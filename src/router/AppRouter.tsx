@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import Home from '../containers/HomePage/HomePage'
-import Checkout from '../containers/CheckoutPage/CheckoutPage'
+import Home from '../pages/HomePage/HomePage'
+import Checkout from '../pages/CheckoutPage/CheckoutPage'
 
 const AppRouter: React.FC = () => {
   return (
