@@ -16,7 +16,7 @@ const Header = (): JSX.Element => {
   const { countItems } = useShoppingCart()
 
   return (
-    <AppBar position="static" sx={{ bgcolor: '#D9D9D9', py: 2 }} elevation={0}>
+    <AppBar position="fixed" sx={{ bgcolor: '#D9D9D9', py: 2 }} elevation={0}>
       <Container maxWidth="xl">
         <Box
           sx={{

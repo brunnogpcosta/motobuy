@@ -70,7 +70,7 @@ const ModalCarShopping: React.FC<IModalCarShopping> = ({
         {cartItems.length > 0
           ? <>
             <Box sx={{ overflowY: 'auto', overflowX: 'hidden', mx: 2 }}>
-              <ListCarShoppingMotos motos={cartItems} />
+              <ListCarShoppingMotos motos={cartItems} resume={false} />
             </Box>
             <Box
               sx={{

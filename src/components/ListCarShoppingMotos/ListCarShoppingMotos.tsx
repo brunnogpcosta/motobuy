@@ -28,10 +28,11 @@ interface IMoto {
 }
 
 interface IListCarShoppingMotos {
+  resume?: boolean
   motos: IMoto[]
 }
 
-const ListCarShoppingMotos: React.FC<IListCarShoppingMotos> = ({ motos }): JSX.Element => {
+const ListCarShoppingMotos: React.FC<IListCarShoppingMotos> = ({ motos, resume }): JSX.Element => {
   const { removeItemsById, addItem, removeAItem } = useShoppingCart()
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
@@ -76,13 +77,19 @@ const ListCarShoppingMotos: React.FC<IListCarShoppingMotos> = ({ motos }): JSX.E
           >
             <Typography sx={{ fontWeight: 'light' }}>Qtd.</Typography>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
-              <IconButton onClick={() => { removeAItem(moto.id) }}>
-                <LessIcon />
-              </IconButton>
+              {
+                (resume === false) &&
+                <IconButton onClick={() => { removeAItem(moto.id) }}>
+                  <LessIcon />
+                </IconButton>
+              }
               <Typography sx={{ p: 1 }}>{moto.quantity}</Typography>
-              <IconButton onClick={() => { addItem(moto) }} >
-                <PlusIcon />
-              </IconButton>
+              {
+                (resume === false) &&
+                <IconButton onClick={() => { addItem(moto) }} >
+                  <PlusIcon />
+                </IconButton>
+              }
             </Box>
           </Box>
 
@@ -91,9 +98,13 @@ const ListCarShoppingMotos: React.FC<IListCarShoppingMotos> = ({ motos }): JSX.E
             <Typography sx={{ fontWeight: 'bold' }}>R$ {toCurrencyFormat(moto.price * (moto?.quantity ?? 1))}</Typography>
           </Box>
 
-          <IconButton onClick={() => { removeItemsById(moto.id) }}>
-            <CloseIcon color="error" />
-          </IconButton>
+          {
+            (resume === false) &&
+            <IconButton sx={{ mb: isSmallScreen ? 2 : 0, mr: isSmallScreen ? 0 : 2 }} onClick={() => { removeItemsById(moto.id) }}>
+              <CloseIcon color="error" />
+            </IconButton>
+          }
+
         </Paper>
 
       ))}

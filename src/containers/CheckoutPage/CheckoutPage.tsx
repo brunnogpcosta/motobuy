@@ -6,10 +6,11 @@ import { useNavigate } from 'react-router-dom'
 import { toast } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
+import { toCurrencyFormat } from '../../utils/functions'
 
 const Checkout = (): JSX.Element => {
   const navigate = useNavigate()
-  const { cartItems, doneBuy } = useShoppingCart()
+  const { cartItems, doneBuy, totalAmount, countItems } = useShoppingCart()
   const theme = useTheme()
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -39,14 +40,14 @@ const Checkout = (): JSX.Element => {
           <Box sx={{ marginBottom: isSmallScreen ? 2 : 0 }}>
             <Typography variant="h5">Quantidade de Items</Typography>
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-              2
+             {countItems()}
             </Typography>
           </Box>
 
           <Box sx={{ marginBottom: isSmallScreen ? 4 : 0 }}>
             <Typography variant="h5">Valor total</Typography>
             <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
-              R$ 44.000,00
+              R$ {toCurrencyFormat(totalAmount())}
             </Typography>
           </Box>
 

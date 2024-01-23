@@ -19,6 +19,7 @@ import Loading from '../../components/Loading/Loading'
 import { ToastContainer } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
+import { formateDate, prepareFormateDate } from '../../utils/functions'
 
 interface IMoto {
   brand: string
@@ -32,6 +33,13 @@ interface IMoto {
   price: number
   quantity?: number
 }
+
+const sortOptions = [
+  { key: '1', label: 'Preço: Maior para o menor' },
+  { key: '2', label: 'Preço: Menor para o Maior' },
+  { key: '3', label: 'Data: Menor para a Maior' },
+  { key: '4', label: 'Data: Menor para a Maior' }
+]
 
 const HomePage = (): JSX.Element | string => {
   const queryParams = new URLSearchParams()
@@ -56,7 +64,7 @@ const HomePage = (): JSX.Element | string => {
       uniqueBrands.add(item.brand)
       uniqueModels.add(item.model)
       uniqueCCs.add(String(item.cc))
-      uniqueDates.add(item.createdAt)
+      uniqueDates.add(formateDate(item.createdAt))
     })
 
     const brandsArray = Array.from(uniqueBrands)
@@ -94,11 +102,14 @@ const HomePage = (): JSX.Element | string => {
       limit: 8,
       page: (searchParams.get('page') ?? '1'),
       search: searchParams.get('search') !== null ? searchParams.get('search') : undefined,
+      from: searchParams.get('from') !== null ? searchParams.get('from') : undefined,
+      to: searchParams.get('to') !== null ? searchParams.get('to') : undefined,
       brand: searchParams.get('brand') !== null ? searchParams.get('brand') : undefined,
       model: searchParams.get('model') !== null ? searchParams.get('model') : undefined,
       cc: searchParams.get('cc') !== null ? Number(searchParams.get('cc')).toString() : undefined,
-      createdAt: searchParams.get('publishedDate') !== null ? searchParams.get('publishedDate') : undefined,
-      sortBy: searchParams.get('sortBy') !== null ? searchParams.get('sortBy') : undefined
+      createdAt: searchParams.get('publishedDate') !== null ? prepareFormateDate(searchParams.get('publishedDate') ?? '') : undefined,
+      sortBy: searchParams.get('sortBy') !== null ? searchParams.get('sortBy') : undefined,
+      order: searchParams.get('order') !== null ? searchParams.get('order') : undefined
     }],
     queryFn: async () => {
       if (searchParams.get('search') !== null) {
@@ -107,6 +118,14 @@ const HomePage = (): JSX.Element | string => {
 
       if (searchParams.get('model') !== null) {
         queryParams.set('model', searchParams.get('model') ?? '')
+      }
+
+      if (searchParams.get('from') !== null) {
+        queryParams.set('from', searchParams.get('from') ?? '')
+      }
+
+      if (searchParams.get('to') !== null) {
+        queryParams.set('to', searchParams.get('to') ?? '')
       }
 
       if (searchParams.get('brand') !== null) {
@@ -118,7 +137,7 @@ const HomePage = (): JSX.Element | string => {
       }
 
       if (searchParams.get('publishedDate') !== null) {
-        queryParams.set('createdAt', searchParams.get('publishedDate') ?? '')
+        queryParams.set('createdAt', prepareFormateDate(searchParams.get('publishedDate') ?? ''))
       }
 
       if (searchParams.get('sortBy') !== null) {
@@ -151,15 +170,53 @@ const HomePage = (): JSX.Element | string => {
   const handleSort = (event: React.ChangeEvent<unknown>, value: any): void => {
     const newSearchParams = new URLSearchParams(searchParams.toString())
 
-    newSearchParams.set('sortBy', 'price')
-
-    if (value === '2') {
-      newSearchParams.set('order', 'asc')
-    } else {
+    if (value === '1') {
+      newSearchParams.set('sortBy', 'price')
       newSearchParams.set('order', 'desc')
+    } else if (value === '2') {
+      newSearchParams.set('sortBy', 'price')
+      newSearchParams.set('order', 'asc')
+    } else if (value === '3') {
+      newSearchParams.set('sortBy', 'date')
+      newSearchParams.set('order', 'desc')
+    } else if (value === '4') {
+      newSearchParams.set('sortBy', 'date')
+      newSearchParams.set('order', 'asc')
     }
 
     navigate({ search: newSearchParams.toString() })
+  }
+
+  const handleSelectedSortOption = (): any => {
+    const sortBy = searchParams.get('sortBy')
+    const order = searchParams.get('order')
+
+    if (sortBy === 'price' && order === 'desc') {
+      return {
+        key: '2',
+        label: 'Preço: Maior para o menor'
+      }
+    } else if (sortBy === 'price' && order === 'asc') {
+      return {
+        key: '1',
+        label: 'Preço: Menor para o maior'
+      }
+    } else if (sortBy === 'date' && order === 'desc') {
+      return {
+        key: '4',
+        label: 'Data: Maior para a menor'
+      }
+    } else if (sortBy === 'date' && order === 'asc') {
+      return {
+        key: '3',
+        label: 'Data: Menor para a maior'
+      }
+    } else {
+      return {
+        key: '1',
+        label: 'Preço: Menor para o maior'
+      }
+    }
   }
 
   return (
@@ -167,7 +224,7 @@ const HomePage = (): JSX.Element | string => {
       <ToastContainer />
       <Carousel />
 
-      <Container maxWidth="xl" sx={{ marginTop: 4 }}>
+      <Container maxWidth="xl" sx={{ marginTop: 4, pb: 10 }}>
         <Grid container spacing={8}>
           <Grid item xs={12} sm={12} md={3}>
             <Box sx={{ textAlign: 'left', marginBottom: 2 }}>
@@ -191,15 +248,16 @@ const HomePage = (): JSX.Element | string => {
                 <Autocomplete
                   disablePortal
                   id="model-filter"
-                  options={[{ key: '1', label: 'Preço: Maior para o menor' }, { key: '2', label: 'Preço: Menor para o Maior' }]}
+                  options={sortOptions}
                   onChange={(_, value) => { handleSort(_, value?.key) }}
-                  value={{ key: searchParams.get('order') === 'desc' ? '2' : '1', label: searchParams.get('order') === 'desc' ? 'Preço: Maior para o menor' : 'Preço: Menor para o maior' }}
+                  value={handleSelectedSortOption()}
                   sx={{
                     width: '100%',
                     maxWidth: 250,
                     '@media (max-width: 600px)': {
                       width: '100%',
-                      maxWidth: '100%'
+                      maxWidth: '100%',
+                      minWidth: '100%'
                     }
                   }}
                   renderInput={(params) => (

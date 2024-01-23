@@ -19,12 +19,16 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
   const searchParams = new URLSearchParams(location.search)
   const [searchValue, setSearchValue] = useState<string>('')
   const [brandValue, setBrandValue] = useState<string | null>(null)
+  const [fromValue, setFromValue] = useState<string | null>(null)
+  const [toValue, setToValue] = useState<string | null>(null)
   const [modelValue, setModelValue] = useState<string | null>(null)
   const [CCValue, setCCValue] = useState<string | null>(null)
   const [publishedDate, setPublishedDate] = useState<string | null>(null)
 
   useEffect(() => {
     setSearchValue(searchParams.get('search') ?? '')
+    setFromValue(searchParams.get('from') ?? null)
+    setToValue(searchParams.get('to') ?? null)
     setBrandValue(searchParams.get('brand') ?? null)
     setModelValue(searchParams.get('model') ?? null)
     setCCValue(searchParams.get('cc') ?? null)
@@ -43,6 +47,8 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
 
   const handleNavigation = (): void => {
     if (searchValue.trim() !== '') searchParams.set('search', searchValue.trim())
+    if (fromValue !== null && fromValue.trim() !== '') searchParams.set('from', fromValue.trim())
+    if (toValue !== null && toValue.trim() !== '') searchParams.set('to', toValue.trim())
     if (modelValue !== null && modelValue.trim() !== '') searchParams.set('model', modelValue.trim())
     if (brandValue !== null && brandValue.trim() !== '') searchParams.set('brand', brandValue.trim())
     if (CCValue !== null && CCValue.trim() !== '') searchParams.set('cc', CCValue.trim())
@@ -57,6 +63,8 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
 
   const handleClearFilters = (): void => {
     setSearchValue('')
+    setFromValue('')
+    setToValue('')
     setBrandValue(null)
     setModelValue(null)
     setCCValue(null)
@@ -106,9 +114,32 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
         onChange={(_, value) => { setCCValue(value) }}
       />
 
+      {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+
+        <TextField
+          type='number'
+          id="from-input"
+          label="Preço mínimo"
+          variant="outlined"
+          sx={{ width: '100%', marginRight: 2 }}
+          value={fromValue}
+          inputProps={{ minLength: 0 }}
+          onChange={(event) => { setFromValue(event.target.value) }}
+        />
+        <TextField
+          type='number'
+          id="to-input"
+          label="Preço máximo"
+          variant="outlined"
+          sx={{ width: '100%' }}
+          value={toValue}
+          onChange={(event) => { setToValue(event.target.value) }}
+        />
+      </Box> */}
+
       <Autocomplete
         disablePortal
-        id="model-filter"
+        id="date-filter"
         options={fields.datesArray}
         sx={{ marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="Data de publicação" />}
