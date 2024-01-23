@@ -1,8 +1,8 @@
 # MotoBuy
 
-![image](https://github.com/brunnogpcosta/motobuy/assets/49787374/38c27817-a577-4ff2-9974-dbb0a31fe10e)
+![motobuy-gif](https://github.com/brunnogpcosta/motobuy/assets/49787374/c9258c4b-0f42-4793-8475-7a36ccafec13)
 
-Bem-vindo ao projeto MotoBuy, que é um projeto front-end de um e-commerce.
+Bem-vindo ao projeto MotoBuy: Projeto front-end e-commerce.
 
 ## Telas
 
@@ -35,16 +35,20 @@ Os protótipos das telas foram elaborados no Figma e podem ser acessados no link
 ✅ Typescript
 ✅ ReactJs
 ✅ Material UI
-✅ Framer Motion
+✅ ESLint
+✅ React Query
 ✅ React Slick
+✅ Jest
 
 
 ## Como Executar
 
 1. Certifique-se de ter o Node.js instalado.
-2. Clone este repositório.
-3. Instale as dependências com `yarn`.
-5. Execute o aplicativo com `yarn start`.
+2. No terminal, clone este repositório em uma pasta no seu computador `git clone https://github.com/brunnogpcosta/motobuy.git`.
+3. Navegue para a pasta motobuy `cd motobuy`
+4. Abra o projeto na IDE de sua preferência, ou se tiver o VSCODE instalado e configurado nas variáveis de ambiente, abra com `code .`
+5. instale as dependências com `yarn`.
+6. Após a instalação de todas as dependências, execute no terminal o aplicativo com `yarn start`.
 
 ## Testes
 
