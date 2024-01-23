@@ -11,9 +11,10 @@ interface IFields {
 
 interface IFilters {
   fields: IFields
+  clear: () => void
 }
 
-const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
+const Filters: React.FC<IFilters> = ({ fields, clear }): JSX.Element => {
   const navigate = useNavigate()
   const location = useLocation()
   const searchParams = new URLSearchParams(location.search)
@@ -70,6 +71,7 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
     setCCValue(null)
     setPublishedDate(null)
     navigate({ search: '' })
+    clear()
   }
 
   return (
@@ -114,7 +116,7 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
         onChange={(_, value) => { setCCValue(value) }}
       />
 
-      {/* <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', marginBottom: 2 }}>
 
         <TextField
           type='number'
@@ -135,7 +137,7 @@ const Filters: React.FC<IFilters> = ({ fields }): JSX.Element => {
           value={toValue}
           onChange={(event) => { setToValue(event.target.value) }}
         />
-      </Box> */}
+      </Box>
 
       <Autocomplete
         disablePortal

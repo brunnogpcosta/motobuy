@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Carousel from '../../components/Carousel/Carousel'
 import ListMotos from '../../components/ListMotos/ListMotos'
 import {
@@ -48,6 +48,7 @@ const HomePage = (): JSX.Element | string => {
   const [pages, setPages] = useState(1)
   const [searchParams] = useSearchParams()
   const [fields, setFields] = useState<any>(null)
+  const [filteredData, setFilteredData] = useState<any>([])
 
   const handleFields = (responseData: any): void => {
     const uniqueBrands = new Set<string>()
@@ -83,15 +84,13 @@ const HomePage = (): JSX.Element | string => {
   }
 
   // im do this beacouse the mockApi dont have count items in free plan
-  const { isPending, error } = useQuery<any>({
+  const { isPending, error, data: totalData, isFetching } = useQuery<any>({
     queryKey: ['repoData'],
     queryFn: async () => {
       const res = await fetch('https://65aad076081bd82e1d97d33d.mockapi.io/moto')
       const responseData: IMoto[] = await res.json()
 
       handleFields(responseData)
-      // set Numbers Page
-      setPages(Math.ceil(responseData.length / limit))
 
       return responseData
     }
@@ -120,14 +119,6 @@ const HomePage = (): JSX.Element | string => {
         queryParams.set('model', searchParams.get('model') ?? '')
       }
 
-      if (searchParams.get('from') !== null) {
-        queryParams.set('from', searchParams.get('from') ?? '')
-      }
-
-      if (searchParams.get('to') !== null) {
-        queryParams.set('to', searchParams.get('to') ?? '')
-      }
-
       if (searchParams.get('brand') !== null) {
         queryParams.set('brand', searchParams.get('brand') ?? '')
       }
@@ -151,11 +142,43 @@ const HomePage = (): JSX.Element | string => {
       const res = await fetch(`https://65aad076081bd82e1d97d33d.mockapi.io/moto?limit=${limit}&page=${searchParams.get('page') ?? '1'}&${queryParams.toString()}`)
       const responseData = await res.json()
 
-      if (queryParams.size > 0) setPages(Math.ceil(responseData.length / limit))
+      if (queryParams.size > 0) {
+        setPages(Math.ceil(responseData.length / limit))
+      }
+
+      // to filter price - mockapi doesnt permit filter in free plan
+      filterPrice(responseData)
 
       return responseData
     }
+
   })
+
+  useEffect(() => {
+    if (!isFetching && (Boolean(totalData))) {
+      if (queryParams.toString().length === 0) {
+        setPages(Math.ceil(totalData?.length / limit))
+      }
+    }
+  }, [isFetching, totalData])
+
+  const filterPrice = (responseData: any): void => {
+    if (Array.isArray(data)) {
+      const filteredData = (searchParams.get('from') !== null || searchParams.get('to') !== null)
+        ? responseData.filter((rd: any) => {
+          const price = rd.price
+
+          return (
+            (searchParams.get('from') === null || price >= Number(searchParams.get('from'))) &&
+            (searchParams.get('to') === null || price <= Number(searchParams.get('to')))
+          )
+        })
+        : responseData
+
+      // setPages(Math.ceil(responseData.length / limit))
+      setFilteredData(filteredData)
+    }
+  }
 
   if (isPending) return <Loading />
   if (error != null) return 'An error has occurred: ' + error.message
@@ -219,6 +242,10 @@ const HomePage = (): JSX.Element | string => {
     }
   }
 
+  const clearFilter = (): void => {
+    setPages(Math.ceil(totalData?.length / limit))
+  }
+
   return (
     <>
       <ToastContainer />
@@ -230,9 +257,9 @@ const HomePage = (): JSX.Element | string => {
             <Box sx={{ textAlign: 'left', marginBottom: 2 }}>
               <Typography>Filtro</Typography>
             </Box>
-            <Filters fields={fields} />
+            <Filters fields={fields} clear={() => { clearFilter() }} />
           </Grid>
-          {Array.isArray(data) && data.length > 0
+          {Array.isArray(filteredData) && filteredData.length > 0
             ? <Grid item xs={12} sm={12} md={9} sx={{ mb: 8 }}>
               <Box
                 sx={{
@@ -266,7 +293,7 @@ const HomePage = (): JSX.Element | string => {
                 />
 
               </Box>
-              <ListMotos data={Array.isArray(data) ? data : []} />
+              <ListMotos data={Array.isArray(filteredData) ? filteredData : []} />
               <Pagination count={pages} onChange={handleChange} />
             </Grid>
             : <Grid item xs={12} sm={12} md={9} sx={{ mb: 8 }}>
