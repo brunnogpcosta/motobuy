@@ -3,7 +3,7 @@ import ListCarShoppingMotos from '../../components/ListCarShoppingMotos/ListCarS
 import { Box, Button, Container, Typography, useMediaQuery, useTheme } from '@mui/material'
 import { useShoppingCart } from '../../contexts/shoppingCart'
 import { useNavigate } from 'react-router-dom'
-import { toast } from 'react-toastify'
+import { toast, ToastContainer } from 'react-toastify'
 
 import 'react-toastify/dist/ReactToastify.css'
 import { toCurrencyFormat } from '../../utils/functions'
@@ -15,9 +15,6 @@ const Checkout = (): JSX.Element => {
   const isSmallScreen = useMediaQuery(theme.breakpoints.down('sm'))
 
   const handlePurchase = (): void => {
-    navigate('/')
-    doneBuy()
-
     toast.success('Operação concluída com sucesso!', {
       position: 'bottom-right',
       autoClose: 3000,
@@ -26,6 +23,11 @@ const Checkout = (): JSX.Element => {
       pauseOnHover: true,
       draggable: true
     })
+
+    setTimeout(() => {
+      navigate('/')
+      doneBuy()
+    }, 1500)
   }
 
   return (
@@ -64,6 +66,7 @@ const Checkout = (): JSX.Element => {
             Finalizar compra
           </Button>
         </Box>
+        <ToastContainer />
       </Container>
     </>
   )

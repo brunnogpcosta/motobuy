@@ -63,8 +63,6 @@ const ShoppingCartProvider: React.FC<ShoppingCartProviderProps> = ({ children })
   const removeAItem = (itemId: string): void => {
     setCartItems((prevItems) => {
       const indexToRemove = prevItems.findIndex((item) => item.id === itemId)
-      console.log(indexToRemove)
-      console.log(cartItems)
 
       if (indexToRemove !== -1) {
         const updatedItems = [...prevItems]

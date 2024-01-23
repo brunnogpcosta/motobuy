@@ -47,6 +47,7 @@ const Filters: React.FC<IFilters> = ({ fields, clear }): JSX.Element => {
   }
 
   const handleNavigation = (): void => {
+    searchParams.delete('page')
     if (searchValue.trim() !== '') searchParams.set('search', searchValue.trim())
     if (fromValue !== null && fromValue.trim() !== '') searchParams.set('from', fromValue.trim())
     if (toValue !== null && toValue.trim() !== '') searchParams.set('to', toValue.trim())
@@ -89,7 +90,7 @@ const Filters: React.FC<IFilters> = ({ fields, clear }): JSX.Element => {
       <Autocomplete
         disablePortal
         id="model-filter"
-        options={fields.modelsArray}
+        options={fields?.modelsArray }
         sx={{ marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="Modelo" />}
         value={modelValue}
@@ -99,7 +100,7 @@ const Filters: React.FC<IFilters> = ({ fields, clear }): JSX.Element => {
       <Autocomplete
         disablePortal
         id="brand-filter"
-        options={fields.brandsArray}
+        options={fields?.brandsArray}
         sx={{ marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="Marca" />}
         value={brandValue}
@@ -109,7 +110,7 @@ const Filters: React.FC<IFilters> = ({ fields, clear }): JSX.Element => {
       <Autocomplete
         disablePortal
         id="cc-filter"
-        options={fields.ccsArray}
+        options={fields?.ccsArray}
         sx={{ marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="Cilindradas" />}
         value={CCValue}
@@ -142,7 +143,7 @@ const Filters: React.FC<IFilters> = ({ fields, clear }): JSX.Element => {
       <Autocomplete
         disablePortal
         id="date-filter"
-        options={fields.datesArray}
+        options={fields?.datesArray}
         sx={{ marginBottom: 2 }}
         renderInput={(params) => <TextField {...params} label="Data de publicação" />}
         value={publishedDate}

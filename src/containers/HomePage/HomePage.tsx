@@ -36,9 +36,9 @@ interface IMoto {
 
 const sortOptions = [
   { key: '1', label: 'Preço: Maior para o menor' },
-  { key: '2', label: 'Preço: Menor para o Maior' },
-  { key: '3', label: 'Data: Menor para a Maior' },
-  { key: '4', label: 'Data: Menor para a Maior' }
+  { key: '2', label: 'Preço: Menor para o maior' },
+  { key: '3', label: 'Data: Maior para a menor' },
+  { key: '4', label: 'Data: Menor para a maior' }
 ]
 
 const HomePage = (): JSX.Element | string => {
@@ -175,7 +175,10 @@ const HomePage = (): JSX.Element | string => {
         })
         : responseData
 
-      // setPages(Math.ceil(responseData.length / limit))
+      if (queryParams.size > 0) {
+        setPages(Math.ceil(responseData.length / limit))
+      }
+
       setFilteredData(filteredData)
     }
   }
@@ -277,7 +280,7 @@ const HomePage = (): JSX.Element | string => {
                   id="model-filter"
                   options={sortOptions}
                   onChange={(_, value) => { handleSort(_, value?.key) }}
-                  value={handleSelectedSortOption()}
+                  value={handleSelectedSortOption() ?? {}}
                   sx={{
                     width: '100%',
                     maxWidth: 250,
