@@ -1,8 +1,8 @@
 # MotoBuy
 
-![image](https://github.com/brunnogpcosta/motobuy/assets/49787374/38c27817-a577-4ff2-9974-dbb0a31fe10e)
+![motobuy-gif](https://github.com/brunnogpcosta/motobuy/assets/49787374/c9258c4b-0f42-4793-8475-7a36ccafec13)
 
-Bem-vindo ao projeto MotoBuy, que é um projeto front-end de um e-commerce.
+Bem-vindo ao projeto MotoBuy: Projeto front-end e-commerce.
 
 ## Telas
 
@@ -35,8 +35,9 @@ Os protótipos das telas foram elaborados no Figma e podem ser acessados no link
 ✅ Typescript
 ✅ ReactJs
 ✅ Material UI
-✅ Framer Motion
+✅ React Query
 ✅ React Slick
+✅ Jest
 
 
 ## Como Executar
