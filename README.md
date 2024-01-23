@@ -43,9 +43,11 @@ Os protótipos das telas foram elaborados no Figma e podem ser acessados no link
 ## Como Executar
 
 1. Certifique-se de ter o Node.js instalado.
-2. Clone este repositório.
-3. Instale as dependências com `yarn`.
-5. Execute o aplicativo com `yarn start`.
+2. No terminal, clone este repositório em uma pasta no seu computador `git clone https://github.com/brunnogpcosta/motobuy.git`.
+3. Navegue para a pasta motobuy `cd motobuy`
+4. Abra o projeto na IDE de sua preferência, ou se tiver o VSCODE instalado e configurado nas variáveis de ambiente, abra com `code .`
+5. instale as dependências com `yarn`.
+6. Após a instalação de todas as dependências, execute no terminal o aplicativo com `yarn start`.
 
 ## Testes
 
