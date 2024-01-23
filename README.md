@@ -35,6 +35,7 @@ Os protótipos das telas foram elaborados no Figma e podem ser acessados no link
 ✅ Typescript
 ✅ ReactJs
 ✅ Material UI
+✅ ESLint
 ✅ React Query
 ✅ React Slick
 ✅ Jest
