@@ -8,7 +8,9 @@ import {
   Typography,
   Autocomplete,
   TextField,
-  Pagination
+  Pagination,
+  useMediaQuery,
+  useTheme
 } from '@mui/material'
 import { useQuery } from '@tanstack/react-query'
 
@@ -42,6 +44,9 @@ const sortOptions = [
 ]
 
 const HomePage = (): JSX.Element | string => {
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
   const queryParams = new URLSearchParams()
   const navigate = useNavigate()
   const limit = 8
@@ -268,6 +273,7 @@ const HomePage = (): JSX.Element | string => {
                   marginBottom: 2,
                   width: '100%',
                   display: 'flex',
+                  flexDirection: isMobile ? 'column' : 'row',
                   justifyContent: 'right'
                 }}
               >
@@ -282,6 +288,7 @@ const HomePage = (): JSX.Element | string => {
                   value={handleSelectedSortOption() ?? {}}
                   sx={{
                     width: '100%',
+                    mt: isMobile ? 4 : 0,
                     maxWidth: 250,
                     '@media (max-width: 600px)': {
                       width: '100%',
