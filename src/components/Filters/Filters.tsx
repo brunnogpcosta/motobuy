@@ -47,14 +47,22 @@ const Filters: React.FC<IFilters> = ({ fields, clear }): JSX.Element => {
   }
 
   const handleNavigation = (): void => {
+    const setParam = (key: string, value: string | null): void => {
+      if (value !== null && value.trim() !== '') {
+        searchParams.set(key, value.trim())
+      } else {
+        searchParams.delete(key)
+      }
+    }
+
     searchParams.delete('page')
-    if (searchValue.trim() !== '') searchParams.set('search', searchValue.trim())
-    if (fromValue !== null && fromValue.trim() !== '') searchParams.set('from', fromValue.trim())
-    if (toValue !== null && toValue.trim() !== '') searchParams.set('to', toValue.trim())
-    if (modelValue !== null && modelValue.trim() !== '') searchParams.set('model', modelValue.trim())
-    if (brandValue !== null && brandValue.trim() !== '') searchParams.set('brand', brandValue.trim())
-    if (CCValue !== null && CCValue.trim() !== '') searchParams.set('cc', CCValue.trim())
-    if (publishedDate !== null && publishedDate.trim() !== '') searchParams.set('publishedDate', publishedDate.trim())
+    setParam('search', searchValue)
+    setParam('from', fromValue)
+    setParam('to', toValue)
+    setParam('model', modelValue)
+    setParam('brand', brandValue)
+    setParam('cc', CCValue)
+    setParam('publishedDate', publishedDate)
 
     navigate({ search: searchParams.toString() })
   }
