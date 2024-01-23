@@ -253,7 +253,6 @@ const HomePage = (): JSX.Element | string => {
     <>
       <ToastContainer />
       <Carousel />
-
       <Container maxWidth="xl" sx={{ marginTop: 4, pb: 10 }}>
         <Grid container spacing={8}>
           <Grid item xs={12} sm={12} md={3}>

@@ -13,7 +13,7 @@ const App = (): JSX.Element => {
     <div className="App">
       <QueryClientProvider client={queryClient}>
        <ShoppingCartProvider>
-          <Header />
+          <Header/>
           <AppRouter />
           <Footer />
         </ShoppingCartProvider>
