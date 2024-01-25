@@ -29,7 +29,7 @@ A tela de checkout irá detalhar tudo o que o usuário selecionou para o carrinh
 
 Os protótipos das telas foram elaborados no Figma e podem ser acessados no link abaixo:
 
-- [Protótipo]([https://www.figma.com/file/LLea86uR4OXgJHJW3MTKyK/Untitled?type=design&node-id=0-1&mode=design&t=RWPvHLPncIl5vMo7-0](https://www.figma.com/file/ZtDGY1gnOa4jjTxg91WzGu/Untitled?type=design&node-id=1-3&mode=design&t=j0c9bfFUTt7ZjoRj-0))
+- [Protótipo](https://www.figma.com/file/ZtDGY1gnOa4jjTxg91WzGu/Untitled?type=design&node-id=0-1&mode=design&t=t2hwTeyxwV7ypjp3-0)
 
 ## Tecnologias Utilizadas
 ✅ Typescript
